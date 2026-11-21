@@ -1,0 +1,254 @@
+{
+    "BaaseUrl":"http://localhost:8080",
+
+    "info": {
+        "_postman_id": "0659e546-2688-41e8-88c1-198aeb41bd43",
+        "name": "API TESTING",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "58984965",
+        "_collection_link": "https://go.postman.co/collection/58984965-2688-41e8-88c1-198aeb41bd43?source=collection_link"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "health check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{BaseUrl}}",
+                            "host": [
+                                "{{BaseUrl}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "register",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{BaseUrl}}api/v1/auth",
+                            "host": [
+                                "{{BaseUrl}}api"
+                            ],
+                            "path": [
+                                "v1",
+                                "auth"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"user@example.com\",\n    \"username\": \"YOUR_USERNAME\",\n    \"password\": \"YOUR_PASSWORD\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{BaseUrl}}api/v1/auth/login",
+                            "host": [
+                                "{{BaseUrl}}api"
+                            ],
+                            "path": [
+                                "v1",
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": ""
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "verify-email",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": ""
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "generate-refresh-token",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{BaseUrl}}refresh-token",
+                            "host": [
+                                "{{BaseUrl}}refresh-token"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "forgot-password",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"user@example.com\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{BaseUrl}}forgot-password",
+                            "host": [
+                                "{{BaseUrl}}forgot-password"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "password-reset",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"newPassword\": \"YOUR_NEW_PASSWORD\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{BaseUrl}}reset-password/{{resetToken}}",
+                            "host": [
+                                "{{BaseUrl}}reset-password"
+                            ],
+                            "path": [
+                                "{{resetToken}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "currenr-user",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{accessToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{BaseUrl}}current-user",
+                            "host": [
+                                "{{BaseUrl}}current-user"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "New Request",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"oldPassword\": \"YOUR_OLD_PASSWORD\",\n    \"newPassword\": \"YOUR_NEW_PASSWORD\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{BaseUrl}}change-password",
+                            "host": [
+                                "{{BaseUrl}}change-password"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "resend-email-verification",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                            "raw": "{{BaseUrl}}resend-email-verification",
+                            "host": [
+                                "{{BaseUrl}}resend-email-verification"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "accessToken",
+            "value": "",
+            "type": "secret"
+        },
+        {
+            "key": "refreshToken",
+            "value": "",
+            "type": "secret"
+        },
+        {
+            "key": "resetToken",
+            "value": "",
+            "type": "secret"
+        },
+        {
+            "key": "BaseUrl",
+            "value": "http://localhost:8080"
+        }
+    ]
+}
