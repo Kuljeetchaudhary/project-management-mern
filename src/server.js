@@ -21,16 +21,17 @@ app.use(
   }),
 );
 app.use(cookieParser())
-
+import allroutes from "./Routes/register.route.js"
 import healthCheckRoute from "./Routes/healthCheck.routes.js"
 import userRegistrationRoute from "./Routes/register.route.js";
-import userLogginRoutr from "./Routes/register.route.js"
+import userLogginRouter from "./Routes/register.route.js"
 import userLogoutRoute from "./Routes/register.route.js"
 
 app.use("/api/v1/healthcheck", healthCheckRoute.router)
 app.use("/api/v1/auth", userRegistrationRoute.router)
-app.use("/api/v1/auth",userLogginRoutr.router)
-app.use("api/v1/auth", userLogoutRoute.router)
+app.use("/api/v1/auth",userLogginRouter.router)
+app.use("/api/v1/auth", userLogoutRoute.router)
+app.use("/", allroutes.router)
 
 app.get("/", (req, res) => {
   res.status(200).send("App is working fine");

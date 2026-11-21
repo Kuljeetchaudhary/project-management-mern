@@ -35,7 +35,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
         next()
     } catch (error) {
         console.error(error)
-        throw new ApiErrors(404, "Sone thing went wrong")
+        throw new ApiErrors(404, "Sonething went wrong")
     }
 
 

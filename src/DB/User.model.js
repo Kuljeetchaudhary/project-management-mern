@@ -64,7 +64,7 @@ UserSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
 
   const salt = await bcrypt.genSalt(10)
-  const hash = bcrypt.hash(this.password, salt)
+  const hash =  await bcrypt.hash(this.password, salt)
   this.password = hash
 });
 
@@ -89,8 +89,8 @@ UserSchema.methods.createRefreshTokens = function () {
   return JWT.sign({
     id: this._id,
   },
-    process.env.ACCESS_TOKEN_PRIVATE_KEY,
-    { expiresIn: process.env.ACCESS_TOKEN_DURATION }
+    process.env.REFRESH_TOKEN_PRIVATE_KEY,
+    { expiresIn: process.env.REFRESH_TOKEN_DURATION }
   )
 
 }

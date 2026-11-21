@@ -91,6 +91,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const LoginUser = asyncHandler(async (req, res) => {
     const { password, email, username } = req.body;
+    console.log(password, email, password)
 
     if (!email || !username) {
         return new ApiErrors(400, "Email and Password are required")
@@ -164,20 +165,22 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
 const verifyEmial = asyncHandler(async (req, res) => {
     const { verificationToken } = req.params;
+    console.log(verificationToken)
     if (!verificationToken) {
         throw new ApiErrors(400, "Email verification toke is missing")
     }
 
-    let hashToken = crypto.createhash("sha256").update(verificationToken).digest("hex")
-
+    let hashToken = crypto.createHash("sha256").update(verificationToken).digest("hex")
+    console.log(hashToken === verificationToken)
     const user = await UserModel.findOne({
         emailVerificationToken: hashToken,
         emailVerificationExpiry: { $gt: Date.now() }
     })
-
     if (!user) {
         throw new ApiErrors(400, "Token is missing or invalid")
     }
+    console.log(hashToken === user.emailVerificationToken)
+
     user.emailVerificationToken = undefined;
     user.emailVerificationExpiry = undefined;
 
@@ -195,7 +198,7 @@ const resendEmailVerifivation = asyncHandler(async (req, res) => {
         throw new ApiErrors(404, "Cann't recognise user")
     }
     if (user.isEmailVerified) {
-        throw new ApiErrors(409, "Email is already Verifies")
+        throw new ApiErrors(409, "Email is already Verified")
     }
     const { unhashedToken, hashedToken, tokenExpiry } =
         user.createTemporaryToken();
@@ -228,28 +231,31 @@ const generateRefreshToken = asyncHandler(async (req, res) => {
 
     try {
         const decodedToken = JWT.verify(refreshToken, process.env.REFRESH_TOKEN_PRIVATE_KEY)
-
         const user = await UserModel.findById(decodedToken.id);
         if (!user) {
             throw new ApiErrors(400, "Invalid refresh token")
         }
-        if (refreshToken != decodedToken) {
+        if (refreshToken !== user.refreshToken) {
             throw new ApiErrors(400, "Refresh token is expired")
 
         }
+
         const options = {
             httpOnly: true,
             secure: true
         }
-        const { newrefreshToken, newaccessToken } = await generateAccessAndRefreshTokens(user.id)
+        const { refreshToken: newrefreshToken, accessToken: newaccessToken } = await generateAccessAndRefreshTokens(user.id)
+       
 
         user.refreshToken = newrefreshToken
-        await user.save()
+        await user.save({ validateBeforeSave: false })
 
-        return res.status(200).cookie("accesstokem", newaccessToken, options).cookie("refreshtoken", newrefreshToken, options).json(
-            new Apiresponse(200, { newaccessToken, newrefreshToken }, "Access Token refreshed"))
+        return res.status(200)
+            .cookie("accesstokem", newaccessToken, options)
+            .cookie("refreshtoken", newrefreshToken, options).json(
+                new Apiresponse(200, { newaccessToken, newrefreshToken }, "Access Token refreshed"))
     } catch (error) {
-        throw new ApiErrors("401", "Invalid Refresh Token")
+        throw new ApiErrors("401", " this is Invalid Refresh Token")
 
     }
 })
@@ -257,7 +263,7 @@ const generateRefreshToken = asyncHandler(async (req, res) => {
 const forgotPasswordrequest = asyncHandler(async (req, res) => {
     const { email } = req.body
 
-    const user = await UserModel.findOne(email)
+    const user = await UserModel.findOne({email:email})
 
     if (!user) {
         throw new ApiErrors(400, "Invalid Email")
@@ -289,7 +295,7 @@ const resetForgotPassword = asyncHandler(async (req, res) => {
     const { resetToken } = req.params
     const { newPassword } = req.body
 
-    let hashedToken = crypto.createhash("sha256").update(resetToken).digest("hex")
+    let hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex")
 
     const user = await UserModel.findOne({
         forgotPasswordToken: hashedToken,
@@ -310,9 +316,7 @@ const resetForgotPassword = asyncHandler(async (req, res) => {
 
 const changeCurrentPassword = asyncHandler(async (req, res) => {
     const { oldPassword, newPassword } = req.body;
-
-    const user = UserModel.findById(req.user?.id)
-
+    const user = await  UserModel.findById(req.user?._id)
     const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
 
     if (!isPasswordCorrect) {

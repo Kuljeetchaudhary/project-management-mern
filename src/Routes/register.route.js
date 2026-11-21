@@ -11,7 +11,7 @@ const router = Router();
 //insecure routes
 router.route("/").post(userRegisterValidator(),validatores,registerUser)
 router.route("/login").post(userLoginValidator(), validatores, LoginUser)
-router.route("/verify-email/:verifcationToken").get(verifyEmial)
+router.route("/verify-email/:verificationToken").get(verifyEmial)
 router.route("/refresh-token").post(generateRefreshToken)
 router.route("/forgot-password").post(userForgotPasswordValidator(), validatores, forgotPasswordrequest)
 router.route("/reset-password/:resetToken").post(userResetForgotPasswordValidator(), validatores, resetForgotPassword)
@@ -19,7 +19,7 @@ router.route("/reset-password/:resetToken").post(userResetForgotPasswordValidato
 //secure route
 router.route("/logout").post(authMiddleware, LogoutUser)
 router.route("/current-user").post(authMiddleware, getCurrentUser)
-router.route("/chnage-password", authMiddleware, userChangeCurrentPasswordValidator(), validatores, changeCurrentPassword)
+router.route("/change-password").post(authMiddleware, userChangeCurrentPasswordValidator(), validatores, changeCurrentPassword)
 router.route("/resend-emial-verification").post(authMiddleware, resendEmailVerifivation)
 
 
