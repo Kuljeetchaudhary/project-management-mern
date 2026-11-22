@@ -21,20 +21,47 @@ app.use(
   }),
 );
 app.use(cookieParser())
+
 import allroutes from "./Routes/register.route.js"
 import healthCheckRoute from "./Routes/healthCheck.routes.js"
 import userRegistrationRoute from "./Routes/register.route.js";
 import userLogginRouter from "./Routes/register.route.js"
 import userLogoutRoute from "./Routes/register.route.js"
 
+import allProjectsroutes from "./Routes/projects.routes.js"
+
+/**
+ * HERE ARE ALL USER ROUTES
+ * /api/v1/heathcheck
+ * /api/v1/auth/register
+ * /api/v1/auth/login
+ * /api/v1/auth/logout
+ * /api/v1/auth//verify-email/:verificationToken
+ * /api/v1/auth/refresh-token
+ * /api/v1/auth/reset-password/:resetToken
+ * /api/v1/auth/forgot-password"
+ * /api/v1/auth//change-password
+ * /api/v1/auth/current-user
+ * /api/v1/auth/resend-emial-verification
+ */
 app.use("/api/v1/healthcheck", healthCheckRoute.router)
 app.use("/api/v1/auth", userRegistrationRoute.router)
 app.use("/api/v1/auth",userLogginRouter.router)
 app.use("/api/v1/auth", userLogoutRoute.router)
+
 app.use("/", allroutes.router)
+app.use("/api/v1/auth",allProjectsroutes)
 
 app.get("/", (req, res) => {
   res.status(200).send("App is working fine");
 });
+
+
+/**
+ * PROJECTS ROUTES
+ * /api/v1/projects/
+ */
+app.use("/api/v1/auth", allProjectsroutes)
+
 
 export default app;
